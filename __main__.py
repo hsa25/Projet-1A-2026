@@ -1,3 +1,29 @@
+from src.Model.Sport import Sport
+from src.Analysis import display all competitions
+
+supported_sport = [
+    Sport(name="football", team_sport=True),
+    Sport(name="tennis",team_sport=False)
+    ]
+
+selected_sport = input("Sélectionnez un sport parmi {supported_sports}")
+if selected_sport not in supported_sports:
+    Raise Exception("le sport sélectionné n'est pas encore supporté par l'appli")
+
+selected_competitions = input(
+    "Sélectionnez une compétition parmi {display_all_competitions(selected_sport)}")
+    
+
+
+
+
+
+
+
+
+
+
+
 import pandas as pd
 
 from src.Parsers.parse_csv import parse_players_csv
@@ -19,3 +45,6 @@ if setting == "0":
     the_goat = find_the_goat_in_df(players_df)
 else:
     the_goat = find_the_goat(players)
+
+
+
