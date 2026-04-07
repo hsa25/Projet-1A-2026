@@ -19,10 +19,10 @@ class Competition:
     def ajouter_participant(self, Equipe_1):
         if not isinstance(Equipe_1, Equipe):
             raise TypeError("L'équipe doit être une équipe")
-        self.__participants[__str__(Equipe_1)]=Equipe_1
+        self.__participants[__str__.Equipe_1()]=Equipe_1
 
     def retirer_participant(self, Equipe_1):
         if not isinstance(Equipe_1, Equipe):
             raise TypeError("L'équipe doit être une équipe")
-        del self.__participants[str(equipe_1)]        
+        del self.__participants[__str__.Equipe_1()]        
 
