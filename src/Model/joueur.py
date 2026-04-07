@@ -1,9 +1,10 @@
 class Joueur:
-    def __init__(self, pseudo : str , sport : str, prenom : str , nom : str ):
+    def __init__(self, pseudo : str , sport : str, prenom : str , nom : str , statistiques : dict):
         self.pseudo = pseudo
         self.sport = sport
         self.prenom = prenom
         self.nom = nom
+        self.statistiques = statistiques
 
     def __repr__(self) -> str :
         return f"Joueur(pseudo='{self.pseudo}')"
