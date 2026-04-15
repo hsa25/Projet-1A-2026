@@ -14,7 +14,7 @@ class Joueur:
                  pseudo: str,
                  genre: str,
                  statistiques: dict,
-                 nationalite: str):
+                 nationnalite: str):
         self.__id = id
         self.__nom = nom
         self.__sport = sport
@@ -25,7 +25,7 @@ class Joueur:
         self.__pseudo = pseudo
         self.__genre = genre
         self.__statistiques = statistiques
-        self.__nationnalite = nationalite
+        self.__nationnalite = nationnalite
 
     @property
     def nom(self):
@@ -64,7 +64,7 @@ class Joueur:
         return self.__statistiques
 
     @property
-    def nationalite(self):
+    def nationnalite(self):
         return self.__nationnalite
 
     def __str__(self):
