@@ -18,7 +18,7 @@ if selected_sport not in supported_sports:
     Raise Exception("Le sport sélectionné n'est pas encore supporté par l'appli")
 
 
-display_all_competitions = {"tennis": ["wta","atp"],"footba}
+display_all_competitions = {"tennis": ["wta","atp"],"footba"}
 selected_competitions = input(
     "Sélectionnez une compétition parmi {display_all_competitions(selected_sport)}")
     
