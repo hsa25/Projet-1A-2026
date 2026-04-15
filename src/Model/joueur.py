@@ -71,7 +71,7 @@ class Joueur:
         return f"{self.__nom}"
 
     def __repr__(self):
-        return f"'Joueur({self.__id}, {self.__nom}, {self.__sport}, {self.__date_naissance}, {self.__taille}, {self.poids}, {self.__role}, {self.__pseudo}, {self.__genre}, {self.__statistiques}, {self.__nationnalite})'"
+        return f"'Joueur({self.__id}, {self.__nom}, {self.__sport}, {self.__date_naissance}, {self.__taille}, {self.poids}, {self.__role}, {self.__pseudo}, {self.__genre}, {self.__statistiques}, {self.__nationalite})'"
 
     def __eq__(self, other):
         if not isinstance(other, Joueur):

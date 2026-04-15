@@ -61,3 +61,5 @@ class Equipe():
 
     def __repr__(self) -> str:
         return f"Equipe({self.__sport}, {self.__id}, {self.__nom}, {self.__abrev}, {self.__surnom}, {self.__region_small}, {self.__region_big}, {self.__date_creation}, {self.__joueurs})"
+
+    
