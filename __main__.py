@@ -3,13 +3,22 @@ from src.Analysis import display all competitions
 
 supported_sport = [
     Sport(name="football", team_sport=True),
-    Sport(name="tennis",team_sport=False)
+    Sport(name="tennis",team_sport=False),
+    Sport(name="volleyball", team_sport= True),
+    Sport(name="basketball", team_sport=True),
+    Sport(name="league of legends", team_sport=True),
+    Sport(name="badminton", team_sport= False),
+    Sport(name="échecs", team_sport=False),
+    Sport(name="counter strike 2", team_sport=True),
+    Sport(name="starcraft 2", team_sport=False)
     ]
 
 selected_sport = input("Sélectionnez un sport parmi {supported_sports}")
 if selected_sport not in supported_sports:
-    Raise Exception("le sport sélectionné n'est pas encore supporté par l'appli")
+    Raise Exception("Le sport sélectionné n'est pas encore supporté par l'appli")
 
+
+display_all_competitions = {"tennis": ["wta","atp"],"footba}
 selected_competitions = input(
     "Sélectionnez une compétition parmi {display_all_competitions(selected_sport)}")
     
