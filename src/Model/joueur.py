@@ -25,7 +25,7 @@ class Joueur:
         self.__pseudo = pseudo
         self.__genre = genre
         self.__statistiques = statistiques
-        self.__nationnalite = nationalite
+        self.__nationalite = nationalite
 
     @property
     def nom(self):
