@@ -14,7 +14,7 @@ class Joueur:
                  pseudo: str,
                  genre: str,
                  statistiques: dict,
-                 nationnalite: str):
+                 nationalite: str):
         self.__id = id
         self.__nom = nom
         self.__sport = sport
@@ -25,7 +25,7 @@ class Joueur:
         self.__pseudo = pseudo
         self.__genre = genre
         self.__statistiques = statistiques
-        self.__nationnalite = nationnalite
+        self.__nationalite = nationalite
 
     @property
     def nom(self):
@@ -64,14 +64,14 @@ class Joueur:
         return self.__statistiques
 
     @property
-    def nationnalite(self):
-        return self.__nationnalite
+    def nationalite(self):
+        return self.__nationalite
 
     def __str__(self):
         return f"{self.__nom}"
 
     def __repr__(self):
-        return f"'Joueur({self.__id}, {self.__nom}, {self.__sport}, {self.__date_naissance}, {self.__taille}, {self.poids}, {self.__role}, {self.__pseudo}, {self.__genre}, {self.__statistiques}, {self.__nationnalite})'"
+        return f"'Joueur({self.__id}, {self.__nom}, {self.__sport}, {self.__date_naissance}, {self.__taille}, {self.poids}, {self.__role}, {self.__pseudo}, {self.__genre}, {self.__statistiques}, {self.__nationalite})'"
 
     def __eq__(self, other):
         if not isinstance(other, Joueur):
