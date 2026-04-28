@@ -18,7 +18,7 @@ if selected_sport not in supported_sports:
     Raise Exception("Le sport sélectionné n'est pas encore supporté par l'appli")
 
 
-display_all_competitions = {"tennis": ["wta","atp"],
+display_all_competitions = {"tennis": ["atp", "wta"],
                             "football": ["ligue des champions", "Jupiler League", 
                                         "Premier League", "Ligue 1", "Bundesliga", 
                                         "Serie A", "Eredivisie", "Ekstraklasa", 
