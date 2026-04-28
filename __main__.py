@@ -24,7 +24,8 @@ display_all_competitions = {"tennis": ["atp", "wta"],
                                         "Serie A", "Eredivisie", "Ekstraklasa", 
                                         "Liga ZON Sagres","Scotland Premier League", 
                                         "LIGA BBVA", "Super League"],
-                            "badminton": [""]}
+                            "badminton": ["Hommes", "Femmes"],
+                            "basketball": ["regular", "play-off"]}
 selected_competitions = input(
     "Sélectionnez une compétition parmi {display_all_competitions(selected_sport)}")
     
