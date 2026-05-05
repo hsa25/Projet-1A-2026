@@ -8,7 +8,7 @@ from ..Model.Base import Base
 from ..Model.Sport import Sport
 
 
-def parse_chess(path, nom_base: str):
+def parse_chess(path, nom_base: str) -> Base:
 
     player = list(csv.reader(open(os.path.join(path, "player.csv"))))
     match = list(csv.reader(open(os.path.join(path, "match.csv"))))
@@ -64,5 +64,5 @@ def parse_chess(path, nom_base: str):
     return Base(nom=nom_base,
                 sport=Sport('Échecs', 1),
                 equipes=liste_equipe,
-                competition=[Competition(nom='Sans nom',
-                                         matchs=liste_matchs)])
+                competitions=[Competition(nom='Sans nom',
+                                          matchs=liste_matchs)])

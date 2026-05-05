@@ -1,5 +1,6 @@
 from .Match import Match
 
+
 class Competition:
 
     def __init__(self,
@@ -8,8 +9,8 @@ class Competition:
                  ville: str = None,
                  pays: str = None,
                  type: str = None,
-                 id: str  = None,
-                 nombre_participants: int = None)-> None:
+                 id: str = None,
+                 nombre_participants: int = None) -> None:
         self.__nom = nom
         self.__matchs = matchs
         self.__ville = ville
@@ -17,3 +18,6 @@ class Competition:
         self.__type = type
         self.__id = id
         self.__nombre_participants = nombre_participants
+
+    def ajouter_match(self, other: Match):
+        self.__matchs.append(other)
