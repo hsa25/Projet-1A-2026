@@ -1,27 +1,38 @@
-from datetime import date
+from datetime import date, time
 from .Equipe import Equipe
-from .Competition import Competition
 
 
-class Match :
+class Match:
 
-    def __init__(self, sport: str,
-                 date: date,
-                 lieu: str,
-                 competition: Competition | None = None,
-                 score_1: list[int] | None = None,
-                 score_2: list[int] | None = None,
-                 Equipe_1: "Equipe" | None = None,
-                 Equipe_2: "Equipe" | None = None):
-        self.__sport = sport
-        self.__date = date
-        self.__lieu = lieu
+    def __init__(self,
+                 equipe_1: Equipe,
+                 equipe_2: Equipe,
+                 score_1: list[int],
+                 score_2: list[int],
+                 id: int = None,
+                 round: int | str = None,
+                 groupe: str = None,
+                 ordre: str = None,
+                 date: date = None,
+                 best_of: int = None,
+                 duree: time = None,
+                 contexte: str = None,
+                 stats: dict[float] = None) -> None:
+        self.__equipe_1 = equipe_1
+        self.__equipe_2 = equipe_2
         self.__score_1 = score_1
         self.__score_2 = score_2
-        self.__Equipe_1 = Equipe_1
-        self.__Equipe_2 = Equipe_2
+        self.__id = id
+        self.__round = round
+        self.__groupe = groupe
+        self.__ordre = ordre
+        self.__date = date
+        self.__best_of = best_of
+        self.__duree = duree
+        self.__contexte = contexte
+        self.__stats = stats
 
-    def ajouter_participant_1(self, Equipe_1):
+"""    def ajouter_participant_1(self, Equipe_1):
         if not isinstance(Equipe_1, Equipe):
             raise TypeError("L'équipe 1 doit être une équipe")
         self.__Equipe_1 = Equipe_1
@@ -79,4 +90,4 @@ class Match :
         elif resultat_2 < resultat_1:
             return self.__Equipe_2
         else:
-            raise ValueError("Il n'y a pas de perdant, le match se solde par un nul.")
+            raise ValueError("Il n'y a pas de perdant, le match se solde par un nul.") """

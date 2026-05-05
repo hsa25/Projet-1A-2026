@@ -4,20 +4,18 @@ from Sport import Sport
 
 class Joueur:
     def __init__(self,
-                 id: int,
                  nom: str,
-                 sport: Sport,
-                 date_naissance: date,
-                 taille: float,
-                 poids: float,
-                 role: str,
-                 pseudo: str,
-                 genre: str,
-                 statistiques: dict,
-                 nationalite: str):
+                 id: int = None,
+                 date_naissance: date | str = None,
+                 taille: float = None,
+                 poids: float = None,
+                 role: str = None,
+                 pseudo: str = None,
+                 genre: str = None,
+                 statistiques: dict = None,
+                 nationalite: str = None):
         self.__id = id
         self.__nom = nom
-        self.__sport = sport
         self.__date_naissance = date_naissance
         self.__taille = taille
         self.__poids = poids
