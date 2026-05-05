@@ -1,4 +1,3 @@
-from .Sport import Sport
 from .Joueur import Joueur
 from .Coach import Coach
 from datetime import date
@@ -16,15 +15,15 @@ class Equipe():
                  region_big: str = None,
                  date_creation: date = None,
                  coachs: list[Coach] = None) -> None:
-            self.__id = id
-            self.__nom = nom
-            self.__abrev = abrev
-            self.__surnom = surnom
-            self.__region_small = region_small
-            self.__region_big = region_big
-            self.__date_creation = date_creation
-            self.__joueurs = joueurs
-            self.__coachs = coachs
+        self.__id = id
+        self.__nom = nom
+        self.__abrev = abrev
+        self.__surnom = surnom
+        self.__region_small = region_small
+        self.__region_big = region_big
+        self.__date_creation = date_creation
+        self.__joueurs = joueurs
+        self.__coachs = coachs
 
     @property
     def nom(self):

@@ -1,5 +1,4 @@
 from datetime import date
-from Sport import Sport
 
 
 class Joueur:

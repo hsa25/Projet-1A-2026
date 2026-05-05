@@ -1,9 +1,7 @@
 from .Competition import Competition
-from .Match import Match
 from .Equipe import Equipe
-from .Joueur import Joueur
-from .Coach import Coach
 from .Sport import Sport
+
 
 class Base:
 
