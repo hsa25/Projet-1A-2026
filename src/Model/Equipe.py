@@ -1,24 +1,21 @@
 from .Sport import Sport
-from .Joueur import Joueur  # Modifier quand la classe sera vraiment implémentée
+from .Joueur import Joueur
+from .Coach import Coach
 from datetime import date
 
 
 class Equipe():
 
     def __init__(self,
-                 sport: Sport,
-                 id: int,
                  nom: str,
-                 abrev: str,
-                 surnom: str,
-                 region_small: str,
-                 region_big: str,
-                 date_creation: date,
-                 joueurs: list[Joueur]) -> None:
-        if len(joueurs) != sport.taille_equipe:
-            raise ValueError("Le nombre de joueurs dans l'équipe n'est pas le bon")
-        else:
-            self.__sport = sport
+                 joueurs: list[Joueur],
+                 id: int = None,
+                 abrev: str = None,
+                 surnom: str = None,
+                 region_small: str = None,
+                 region_big: str = None,
+                 date_creation: date = None,
+                 coachs: list[Coach] = None) -> None:
             self.__id = id
             self.__nom = nom
             self.__abrev = abrev
@@ -27,6 +24,7 @@ class Equipe():
             self.__region_big = region_big
             self.__date_creation = date_creation
             self.__joueurs = joueurs
+            self.__coachs = coachs
 
     @property
     def nom(self):
@@ -55,6 +53,10 @@ class Equipe():
     @property
     def joueurs(self):
         return self.__joueurs
+    
+    @property
+    def coachs(self):
+        return self.__coachs
 
     def __str__(self) -> str:
         return f"{self.__nom}"
