@@ -1,4 +1,4 @@
-from datetime import date, time
+from datetime import date
 from .Equipe import Equipe
 
 
@@ -15,7 +15,7 @@ class Match:
                  ordre: str = None,
                  date: date = None,
                  best_of: int = None,
-                 duree: time = None,
+                 duree: float = None,
                  contexte: str = None,
                  stats: dict[float] = None) -> None:
         self.__equipe_1 = equipe_1
@@ -31,6 +31,7 @@ class Match:
         self.__duree = duree
         self.__contexte = contexte
         self.__stats = stats
+
 
 """    def ajouter_participant_1(self, Equipe_1):
         if not isinstance(Equipe_1, Equipe):

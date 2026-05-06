@@ -8,10 +8,13 @@ from ..Model.Base import Base
 from ..Model.Sport import Sport
 
 
-def parse_chess(path, nom_base: str) -> Base:
+player = list(csv.reader(open(os.path.join(path, "player.csv"))))
+match = list(csv.reader(open(os.path.join(path, "match.csv"))))
 
-    player = list(csv.reader(open(os.path.join(path, "player.csv"))))
-    match = list(csv.reader(open(os.path.join(path, "match.csv"))))
+
+def parse_chess(player: list[list[str]],
+                match: list[list[str]],
+                nom_base: str) -> Base:
 
     # Modification du formatage pour ne pas avoir les "" et , dans le nom
     # (compatible même avec les typos qui les oublient en plus \^0^/)
@@ -41,10 +44,9 @@ def parse_chess(path, nom_base: str) -> Base:
                                                                 'elo_blitz': player[i][8]}
                                                   )))
 
-    j1 = 0
-    j2 = 0
-
     for j in range(1, len(match)):
+        j1 = 0
+        j2 = 0
         while j1 == 0 and j2 == 0:
             for k in range(len(liste_equipe)):
                 if match[j][3] == liste_equipe[k].nom:
