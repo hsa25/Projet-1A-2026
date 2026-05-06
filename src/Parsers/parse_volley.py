@@ -44,17 +44,15 @@ def parse_volley(player: list[list[str]],
                                         pseudo=player[j][5]))
 
     # Création des matchs
-
     for m in range(1, match):
         # Recherche des équipes en fonction de leur nom
         j1 = 0
         j2 = 0
-        while j1 == 0 and j2 == 0:
-            for e in liste_equipes:
-                if match[m][2] == e.abrev:
-                    j1 = e
-                if match[m][3] == e.abrev:
-                    j2 = e
+        for e in liste_equipes:
+            if match[m][2] == e.abrev:
+                j1 = e
+            if match[m][3] == e.abrev:
+                j2 = e
         liste_matchs.append(Match(round=match[m][1],
                                   date=match[m][0],
                                   score_1=match[m][4],
@@ -64,6 +62,6 @@ def parse_volley(player: list[list[str]],
 
     return (Base(nom=nom_base,
                  sport=Sport('Volleyball', 13),
-                 competitions=[Competition(nom='sans_nom',
+                 competitions=[Competition(nom=nom_base,
                                            matchs=liste_matchs)],
                  equipes=liste_equipes))

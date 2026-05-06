@@ -1,15 +1,9 @@
-import os
-import csv
 from ..Model.Joueur import Joueur
 from ..Model.Equipe import Equipe
 from ..Model.Match import Match
 from ..Model.Competition import Competition
 from ..Model.Base import Base
 from ..Model.Sport import Sport
-
-
-player = list(csv.reader(open(os.path.join(path, "player.csv"))))
-match = list(csv.reader(open(os.path.join(path, "match.csv"))))
 
 
 def parse_chess(player: list[list[str]],
@@ -47,12 +41,11 @@ def parse_chess(player: list[list[str]],
     for j in range(1, len(match)):
         j1 = 0
         j2 = 0
-        while j1 == 0 and j2 == 0:
-            for k in range(len(liste_equipe)):
-                if match[j][3] == liste_equipe[k].nom:
-                    j1 = liste_equipe[k]
-                if match[j][4] == liste_equipe[k].nom:
-                    j2 = liste_equipe[k]
+        for k in range(len(liste_equipe)):
+            if match[j][3] == liste_equipe[k].nom:
+                j1 = liste_equipe[k]
+            if match[j][4] == liste_equipe[k].nom:
+                j2 = liste_equipe[k]
         liste_matchs.append(Match(round=match[j][0],
                                   groupe=match[j][1],
                                   ordre=match[j][2],
@@ -66,5 +59,5 @@ def parse_chess(player: list[list[str]],
     return Base(nom=nom_base,
                 sport=Sport('Échecs', 1),
                 equipes=liste_equipe,
-                competitions=[Competition(nom='Sans nom',
+                competitions=[Competition(nom=nom_base,
                                           matchs=liste_matchs)])

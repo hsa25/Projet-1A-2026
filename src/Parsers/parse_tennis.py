@@ -37,7 +37,8 @@ def parse_tennis(player: list[list[str]],
                 j1 = e
             if e.id == int(match[m][8]):
                 j2 = e
-        # Modification du format du score (le format enlève la partie entre parenthèses mais je n'ai aucune idée de son utilité)
+        # Modification du format du score
+        # (ce format enlève la partie entre parenthèses mais je n'ai aucune idée de son utilité de toute façon)
         s1 = []
         s2 = []
         for s in len(match[m][9].split(' ')):
