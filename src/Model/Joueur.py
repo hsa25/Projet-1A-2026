@@ -68,15 +68,16 @@ class Joueur:
         self.__statistiques = statistiques
         self.__nationalite = nationalite
 
+
+    @property
+    def id(self) -> int | str | None:
+        """int | str | None : L'identifiant unique du joueur."""
+        return self.__id
+
     @property
     def nom(self) -> str:
         """str : Le nom complet du joueur."""
         return self.__nom
-
-    @property
-    def sport(self):
-        """Le sport pratiqué par le joueur."""
-        return self.__sport
 
     @property
     def date_naissance(self) -> date | str | None:
@@ -135,8 +136,7 @@ class Joueur:
             str: Une chaîne contenant tous les attributs du joueur,
                 utile pour le débogage.
         """
-        return (f"'Joueur({self.__id}, {self.__nom}, {self.__sport}, "
-                f"{self.__date_naissance}, {self.__taille}, {self.poids}, "
+        return (f"{self.__date_naissance}, {self.__taille}, {self.poids}, "
                 f"{self.__role}, {self.__pseudo}, {self.__genre}, "
                 f"{self.__statistiques}, {self.__nationalite})'")
 

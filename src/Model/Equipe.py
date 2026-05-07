@@ -32,7 +32,8 @@ class Equipe():
                  region_small: str = None,
                  region_big: str = None,
                  date_creation: date = None,
-                 coachs: list[Coach] = None) -> None:
+                 coachs: list[Coach] = None),
+                 sport : str = None -> None:
         """
         Initialise une instance d'Equipe.
 
@@ -52,6 +53,8 @@ class Equipe():
                 Par défaut None.
             coachs (list[Coach], optional): La liste des entraîneurs de l'équipe.
                 Par défaut None.
+            sport (str, optional): Le nom du sport.
+                Par défaut None.
 
         Returns:
             None
@@ -65,6 +68,7 @@ class Equipe():
         self.__date_creation = date_creation
         self.__joueurs = joueurs
         self.__coachs = coachs
+        self.__sport = sport
 
     @property
     def nom(self) -> str:
@@ -135,4 +139,4 @@ class Equipe():
         self.__joueurs.append(other)
 
     def ajouter_coach(self, other: Coach):
-        self.__joueurs.append(other)
+        self.__coachs.append(other)

@@ -171,15 +171,15 @@ def parse_foot_el(chemin: str, nom_base: str) -> Base:
                                              equipe_2=equipe_exterieur,
                                              date=fichier_matchs[j][5],
                                              round=fichier_matchs[j][4],
-                                             score_1=int(fichier_matchs[j][9]),
-                                             score_2=int(fichier_matchs[j][10]))]]
+                                             score_1=[int(fichier_matchs[j][9])],
+                                             score_2=[int(fichier_matchs[j][10])])]]
         else:
             competitions[cle_comp][4].append(Match(equipe_1=equipe_domicile,
                                                    equipe_2=equipe_exterieur,
                                                    date=fichier_matchs[j][5],
                                                    round=fichier_matchs[j][4],
-                                                   score_1=int(fichier_matchs[j][9]),
-                                                   score_2=int(fichier_matchs[j][10])))
+                                                   score_1=[int(fichier_matchs[j][9])],
+                                                   score_2=[int(fichier_matchs[j][10])]))
 
     # 6. Finalisation des compétitions et de la base
     for comp in competitions:
