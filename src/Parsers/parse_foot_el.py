@@ -44,7 +44,7 @@ def parse_foot_el(chemin: str, nom_base: str) -> Base:
         team_2.csv :
             [1] id         - Identifiant unique de l'équipe (api_id)
             [2] nom        - Nom complet de l'équipe
-            [3] abreviation - Abréviation de l'équipe
+            [3] abrev - Abréviation de l'équipe
 
         player_2.csv :
             [1] id             - Identifiant unique du joueur (api_id)
@@ -140,7 +140,7 @@ def parse_foot_el(chemin: str, nom_base: str) -> Base:
         liste_equipes.append(Equipe(
             id=fichier_equipes[i][1],
             nom=fichier_equipes[i][2],
-            abreviation=fichier_equipes[i][3],
+            abrev=fichier_equipes[i][3],
         ))
 
     for j in range(1, len(fichier_matchs)):

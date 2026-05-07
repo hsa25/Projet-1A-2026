@@ -43,9 +43,9 @@ class Joueur:
             id (int, optional): L'identifiant unique du joueur. Par défaut None.
             date_naissance (date | str, optional): La date de naissance du joueur,
                 sous forme d'objet date ou de chaîne de caractères. Par défaut None.
-            taille (float, optional): La taille du joueur en mètres (ex. : 1.78).
+            taille (float, optional): La taille du joueur.
                 Par défaut None.
-            poids (float, optional): Le poids du joueur en kilogrammes (ex. : 73.0).
+            poids (float, optional): Le poids du joueur.
                 Par défaut None.
             role (str, optional): Le rôle ou poste du joueur (ex. : "attaquant",
                 "gardien"). Par défaut None.
