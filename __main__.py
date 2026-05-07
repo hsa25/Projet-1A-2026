@@ -1,7 +1,7 @@
 from src.Model.Sport import Sport
 from src.Analysis import display all competitions
 
-supported_sport = [
+supported_sports = [
     Sport(name="football", team_sport=True),
     Sport(name="tennis atp",team_sport=False),
     Sport(name="tennis wta",team_sport=False),
@@ -16,7 +16,7 @@ supported_sport = [
 
 selected_sport = input("Sélectionnez un sport parmi {supported_sports}")
 if selected_sport not in supported_sports:
-    Raise Exception("Le sport sélectionné n'est pas encore supporté par l'appli")
+    raise Exception("Le sport sélectionné n'est pas encore supporté par l'appli")
 
 
 display_all_competitions = {"tennis atp": ["Brisbane", "United Cup","Hong Kong",

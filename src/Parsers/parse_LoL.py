@@ -152,8 +152,8 @@ def parse_LoL(player: list[list[str]],
                                     joueurs=[],
                                     coachs=[]))
 
-    # Ajout des coachs (ça devrait être familier à force)
-    for c in len(1, len(coach)):          # bug: devrait être range(1, len(coach))
+    # Ajout des coachs 
+    for c in range(1, len(coach)):          
         for e in liste_equipes:
             if e.nom == coach[c][5]:
                 e.ajouter_coach(Coach(pseudo=coach[c][0],
@@ -163,14 +163,14 @@ def parse_LoL(player: list[list[str]],
                                       role=coach[c][4]))
 
     # Ajout des joueurs
-    for j in len(1, len(player)):         # bug: devrait être range(1, len(player))
+    for j in len(1, len(player)):         
         for e in liste_equipes:
             if e.nom == player[j][5]:
-                e.ajouter_joueur(Joueur(pseudo=player[c][0],   # bug: devrait être player[j][0]
-                                        nom=player[c][1],       # bug: devrait être player[j][1]
-                                        nationalite=player[c][2],   # bug: devrait être player[j][2]
-                                        date_naissance=player[c][3],# bug: devrait être player[j][3]
-                                        role=player[c][4]))         # bug: devrait être player[j][4]
+                e.ajouter_joueur(Joueur(pseudo=player[j][0],   
+                                        nom=player[j][1],    
+                                        nationalite=player[j][2],   
+                                        date_naissance=player[j][3],
+                                        role=player[j][4]))       
 
     # Création des matchs
     for m in range(1, len(match)):
