@@ -15,17 +15,25 @@ class Analyseur:
         """Affiche dans la console tous les matchs d'une compétition."""
         for comp in self.base._Base__competitions:
             if comp._Competition__nom == nom_competition:
-                print(f"--- Résultats pour {nom_competition} ({self.base._Base__sport}) ---")
+                print(f"--- Résultats pour {nom_competition} ({self.base._Base__sport.nom_sport}) ---")
+                
                 for match in comp._Competition__matchs:
                     eq1 = match._Match__equipe_1.nom if match._Match__equipe_1 else "Inconnu"
                     eq2 = match._Match__equipe_2.nom if match._Match__equipe_2 else "Inconnu"
+                    
                     score1 = match._Match__score_1
                     score2 = match._Match__score_2
-                   
-                    print(f"{match._Match__date} | {eq1} {score1} - {score2} {eq2}")
+                    # Si le score est une liste, on prend le premier élément
+                    if isinstance(score1, list) and len(score1) > 0: score1 = score1[0]
+                    if isinstance(score2, list) and len(score2) > 0: score2 = score2[0]
+                    
+                    date_match = match._Match__date if match._Match__date else "Date inconnue"
+                    
+                    print(f"{date_match} | {eq1} {score1} - {score2} {eq2}")
                 return
-      
+        
         print(f"Compétition '{nom_competition}' introuvable.")
+
 
     def rechercher_joueur(self, nom_joueur: str) -> dict:
         """

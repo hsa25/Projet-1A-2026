@@ -6,7 +6,7 @@ from ..Model.Base import Base
 from ..Model.Sport import Sport
 
 
-def parse_badmintion(player: list[list[str]],
+def parse_badminton(player: list[list[str]],
                      match: list[list[str]],
                      nom_base: str) -> Base:
     """
