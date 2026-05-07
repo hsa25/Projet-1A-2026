@@ -80,15 +80,15 @@ def parse_chess(player: list[list[str]],
     """
     # Modification du formatage pour ne pas avoir les "" et , dans le nom
     # (compatible même avec les typos qui les oublient en plus \^0^/)
-    for i in range(len(player)):
+    for i in range(1,len(player)):
         player[i][0].replace('"', '')
         player[i][0].replace(',', '')
 
-    for j in range(len(match)):
-        player[j][3].replace('"', '')
-        player[j][3].replace(',', '')
-        player[j][4].replace('"', '')
-        player[j][4].replace(',', '')
+    for j in range(1, len(match)):
+        match[j][3] = match[j][3].replace('"', '')
+        match[j][3] = match[j][3].replace(',', '')
+        match[j][4] = match[j][4].replace('"', '')
+        match[j][4] = match[j][4].replace(',', '')
 
     liste_equipe = []
     liste_matchs = []
@@ -96,7 +96,7 @@ def parse_chess(player: list[list[str]],
     for i in range(1, len(player)):
         liste_equipe.append(Equipe(nom=player[i][0],
                                    region_big=player[i][4],
-                                   joueurs=Joueur(nom=player[i][0],
+                                   joueurs=[Joueur(nom=player[i][0],
                                                   id=int(player[i][1]),
                                                   date_naissance=player[i][2],
                                                   genre=player[i][3],
@@ -104,7 +104,7 @@ def parse_chess(player: list[list[str]],
                                                   statistiques={'elo_standard': player[i][6],
                                                                 'elo_rapide': player[i][7],
                                                                 'elo_blitz': player[i][8]}
-                                                  )))
+                                                  )]))
 
     for j in range(1, len(match)):
         j1 = 0

@@ -23,13 +23,14 @@ class Analyseur:
                     
                     score1 = match._Match__score_1
                     score2 = match._Match__score_2
-                    # Si le score est une liste, on prend le premier élément
-                    if isinstance(score1, list) and len(score1) > 0: score1 = score1[0]
-                    if isinstance(score2, list) and len(score2) > 0: score2 = score2[0]
                     
+                    if isinstance(score1, list) and isinstance(score2, list):
+                        score_affiche = " ".join([f"{s1}-{s2}" for s1, s2 in zip(score1, score2)])
+                    else:
+                        score_affiche = f"{score1}-{score2}"                    
                     date_match = match._Match__date if match._Match__date else "Date inconnue"
                     
-                    print(f"{date_match} | {eq1} {score1} - {score2} {eq2}")
+                    print(f"{date_match} | {eq1} {score_affiche} {eq2}")
                 return
         
         print(f"Compétition '{nom_competition}' introuvable.")
