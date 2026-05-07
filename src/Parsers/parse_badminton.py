@@ -9,7 +9,77 @@ from ..Model.Sport import Sport
 def parse_badmintion(player: list[list[str]],
                      match: list[list[str]],
                      nom_base: str) -> Base:
+    """
+    Parse des données brutes de badminton et retourne un objet Base structuré.
 
+    Cette fonction transforme deux tableaux 2D (joueurs et matchs) en un objet
+    Base contenant l'ensemble des compétitions, équipes, joueurs et résultats
+    de matchs associés.
+
+    Args:
+        player (list[list[str]]): Tableau 2D des joueurs/équipes.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] nom       - Nom du joueur / de l'équipe
+                [1] region_small - Région courte (ex: "EUR")
+                [2] region_big   - Région complète (ex: "Denmark")
+
+        match (list[list[str]]): Tableau 2D des matchs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0]  nom de la compétition (clé unique de regroupement)
+                [1]  ville de la compétition
+                [2]  pays de la compétition
+                [3]  date du match
+                [4]  type de compétition
+                [5]  round (tour)
+                [6]  nom de l'équipe 1
+                [7]  nom de l'équipe 2
+                [8]  (non utilisé)
+                [9]  scores du set 1, format "X-Y"
+                [10] scores du set 2, format "X-Y"
+                [11] scores du set 3, format "X-Y"
+
+            Les scores [9], [10], [11] sont chacun séparés par '-' :
+                score_1 regroupe les valeurs gauches (X) des trois sets,
+                score_2 regroupe les valeurs droites (Y) des trois sets.
+
+        nom_base (str): Nom attribué à l'objet Base retourné.
+
+    Returns:
+        Base: Objet Base peuplé avec :
+            - sport   : Sport('Badminton', 1)
+            - equipes : liste d'objets Equipe, chacun contenant un Joueur
+            - competitions : liste d'objets Competition regroupant leurs Matchs
+
+    Notes:
+        - La ligne 0 de player et match est toujours ignorée (en-tête).
+        - La résolution des équipes se fait par correspondance de noms entre
+          match[j][6]/match[j][7] et liste_equipe. Si aucune correspondance
+          n'est trouvée, la variable d'équipe vaut 0 (entier), ce qui peut
+          provoquer des erreurs en aval — les données doivent être cohérentes.
+        - Le regroupement des compétitions utilise match[j][0] comme clé de
+          dictionnaire. La première occurrence crée l'entrée ; les suivantes
+          ajoutent un Match à la liste existante.
+        - Chaque Equipe est créée avec un unique Joueur portant le même nom,
+          reflétant la structure individuelle des épreuves de badminton.
+
+    Example:
+        >>> players = [
+        ...     ["Name", "Region", "Country"],           # en-tête
+        ...     ["Viktor Axelsen", "EUR", "Denmark"],
+        ...     ["Kento Momota",   "ASI", "Japan"],
+        ... ]
+        >>> matches = [
+        ...     ["Comp", "City", "Country", "Date", "Type", "Round",
+        ...      "P1", "P2", "?", "S1", "S2", "S3"],   # en-tête
+        ...     ["BWF WC", "Paris", "France", "2024-08-05", "WC", "QF",
+        ...      "Viktor Axelsen", "Kento Momota", "", "21-18", "19-21", "21-15"],
+        ... ]
+        >>> base = parse_badmintion(players, matches, "BWF_2024")
+        >>> base.nom
+        'BWF_2024'
+    """
     liste_equipe = []
     liste_competition = []
     competitions = {}

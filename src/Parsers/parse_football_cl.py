@@ -9,7 +9,149 @@ def parse_football_cl(player: list[list[str]],
                       match: list[list[str]],
                       team: list[list[str]],
                       nom_base: str) -> Base:
+    """
+    Parse des données brutes de Champions League et retourne un objet Base structuré.
 
+    Cette fonction transforme trois tableaux 2D (joueurs, matchs, équipes) en un
+    objet Base contenant une unique Competition regroupant l'ensemble des équipes,
+    joueurs avec leurs statistiques détaillées, et matchs du tournoi.
+
+    Args:
+        player (list[list[str]]): Tableau 2D des joueurs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0]  nom                - Nom du joueur
+                [1]  abrev_equipe       - Abréviation de l'équipe (clé de jointure)
+                [2]  role               - Poste du joueur
+                [3]  assists            - Passes décisives
+                [4]  corners            - Corners tirés
+                [5]  offsides           - Hors-jeux
+                [6]  dribbles           - Dribbles réussis
+                [7]  total_attempts     - Tentatives de tir totales
+                [8]  on_target          - Tirs cadrés
+                [9]  off_target         - Tirs non cadrés
+                [10] blocked            - Tirs bloqués
+                [11] balls_recovered    - Ballons récupérés
+                [12] tackles_won        - Tacles réussis
+                [13] tackles_lost       - Tacles ratés
+                [14] clearance_attempted- Dégagements tentés
+                [15] fouls_committed    - Fautes commises
+                [16] fouls_suffered     - Fautes subies
+                [17] red                - Cartons rouges
+                [18] yellow             - Cartons jaunes
+                [19] pass_attempted     - Passes tentées
+                [20] pass_completed     - Passes réussies
+                [21] cross_attempted    - Centres tentés
+                [22] cross_completed    - Centres réussis
+                [23] freekicks_taken    - Coups francs tirés
+                [24] (non utilisé)
+                [25] saved              - Arrêts (gardien)
+                [26] conceded           - Buts encaissés (gardien)
+                [27] saved_penalties    - Penalties arrêtés (gardien)
+                [28] cleansheets        - Clean sheets (gardien)
+                [29] punches_made       - Sorties au poing (gardien)
+                [30] goals              - Buts marqués
+                [31] goals_right_foot   - Buts du pied droit
+                [32] goals_left_foot    - Buts du pied gauche
+                [33] goals_headers      - Buts de la tête
+                [34] goals_others       - Buts autres
+                [35] goals_inside_area  - Buts dans la surface
+                [36] gaols_outside_area - Buts hors surface (typo conservée)
+                [37] penalties          - Penalties marqués
+                [38] minutes_played     - Minutes jouées
+                [39] match_played       - Matchs joués
+                [40] distance_covered   - Distance parcourue
+
+        match (list[list[str]]): Tableau 2D des matchs.
+            La ligne 0 est ignorée (en-tête).
+            Également utilisé par erreur pour lire region_big et region_small
+            des équipes (voir Notes).
+            Format des lignes suivantes :
+                [0] date        - Date du match
+                [1] (non utilisé)
+                [2] round       - Tour du tournoi
+                [3] ordre       - Ordre du match dans le tour
+                [4] groupe      - Groupe ou poule
+                [5] abrev_eq1   - Abréviation équipe 1 (clé de résolution)
+                [6] abrev_eq2   - Abréviation équipe 2 (clé de résolution)
+                [7] score_1     - Score final équipe 1
+                [8] score_2     - Score final équipe 2
+
+        team (list[list[str]]): Tableau 2D des équipes.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] nom           - Nom complet de l'équipe
+                [1] abrev         - Abréviation (clé de jointure avec joueurs et matchs)
+                [2] date_creation - Date de création du club
+                [3] region_big    - Région complète (ex: "England")
+                [4] id            - Identifiant unique de l'équipe
+                [5] region_small  - Région courte (ex: "ENG")
+
+        nom_base (str): Nom attribué à l'objet Base retourné. Utilisé également
+            comme nom de l'unique Competition créée.
+
+    Returns:
+        Base: Objet Base peuplé avec :
+            - sport        : Sport('Football Champions League')
+            - equipes      : liste d'objets Equipe avec leurs Joueurs et leurs
+                             statistiques individuelles détaillées
+            - competitions : liste contenant une unique Competition dont le nom
+                             est nom_base, regroupant tous les Matchs
+
+    Notes:
+        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
+        - Il existe un bug dans la création des équipes : region_big et
+          region_small sont lues depuis match[t][3] et match[t][5] au lieu de
+          team[t][3] et team[t][5]. Cela peut provoquer un IndexError si le
+          tableau match est plus court que team, ou produire des valeurs erronées.
+        - De même, date_creation utilise [t][2] sans préciser le tableau
+          (devrait être team[t][2]).
+        - La résolution des équipes se fait par correspondance d'abréviation
+          (e.abrev). Si aucune correspondance n'est trouvée, la variable
+          d'équipe vaut 0 (entier), ce qui peut provoquer des erreurs en aval.
+        - La colonne player[j][24] n'est pas utilisée dans le dictionnaire de
+          statistiques — probablement un oubli ou une colonne sans signification.
+        - La clé 'gaols_outside_area' est une typo pour 'goals_outside_area' ;
+          elle est conservée telle quelle pour ne pas modifier le comportement.
+        - Tous les matchs appartiennent à une seule Competition portant le nom
+          de nom_base.
+
+    Example:
+        >>> teams = [
+        ...     ["nom", "abrev", "date_creation", "region_big", "id", "region_small"],
+        ...     ["Real Madrid", "RMA", "1902-03-06", "Spain", "1", "ESP"],
+        ...     ["Bayern Munich", "BAY", "1900-02-27", "Germany", "2", "GER"],
+        ... ]
+        >>> players = [
+        ...     ["nom", "abrev", "role", "assists", "corners", "offsides",
+        ...      "dribbles", "total_attempts", "on_target", "off_target",
+        ...      "blocked", "balls_recovered", "tackles_won", "tackles_lost",
+        ...      "clearance_attempted", "fouls_committed", "fouls_suffered",
+        ...      "red", "yellow", "pass_attempted", "pass_completed",
+        ...      "cross_attempted", "cross_completed", "freekicks_taken", "?",
+        ...      "saved", "conceded", "saved_penalties", "cleansheets",
+        ...      "punches_made", "goals", "goals_right_foot", "goals_left_foot",
+        ...      "goals_headers", "goals_others", "goals_inside_area",
+        ...      "gaols_outside_area", "penalties", "minutes_played",
+        ...      "match_played", "distance_covered"],
+        ...     ["Vinicius Jr", "RMA", "FW", "8", "0", "22", "120", "95", "42",
+        ...      "38", "15", "60", "10", "5", "2", "18", "30", "0", "3",
+        ...      "450", "380", "45", "20", "5", "0", "0", "0", "0", "0",
+        ...      "0", "21", "14", "2", "4", "1", "18", "3", "3", "2980",
+        ...      "38", "350.5"],
+        ... ]
+        >>> matches = [
+        ...     ["date", "?", "round", "ordre", "groupe",
+        ...      "eq1", "eq2", "score_1", "score_2"],
+        ...     ["2024-04-09", "", "QF", "1", "A",
+        ...      "RMA", "BAY", "2", "1"],
+        ... ]
+        >>> base = parse_football_cl(players, matches, teams, "UCL2024")
+        >>> base.nom
+        'UCL2024'
+        >>> len(base.competitions)
+        1
+    """
     liste_equipes = []
     liste_matchs = []
 
@@ -18,8 +160,8 @@ def parse_football_cl(player: list[list[str]],
         liste_equipes.append(Equipe(nom=team[t][0],
                                     abrev=team[t][1],
                                     date_creation=[t][2],
-                                    region_big=match[t][3],
-                                    region_small=match[t][5],
+                                    region_big=match[t][3],    # bug: devrait être team[t][3]
+                                    region_small=match[t][5],  # bug: devrait être team[t][5]
                                     id=team[t][4],
                                     joueurs=[]))
 

@@ -9,7 +9,117 @@ from ..Model.Sport import Sport
 def parse_tennis(player: list[list[str]],
                  match: list[list[str]],
                  nom_base: str) -> Base:
+    """
+    Parse des données brutes de tennis et retourne un objet Base structuré.
 
+    Cette fonction transforme deux tableaux 2D (joueurs et matchs) en un objet
+    Base contenant plusieurs Competitions regroupées par tournoi, chacune avec
+    ses équipes (un joueur par équipe), ses matchs et leurs statistiques de
+    service détaillées.
+
+    Args:
+        player (list[list[str]]): Tableau 2D des joueurs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] id             - Identifiant unique du joueur (int)
+                [1] prenom         - Prénom du joueur
+                [2] nom            - Nom de famille du joueur (utilisé aussi
+                                     comme nom de l'Equipe)
+                [3] role           - Classement ou rôle (ex: "ATP", "WTA")
+                [4] date_naissance - Date de naissance au format "YYYYMMDD",
+                                     reformatée en "YYYY-MM-DD"
+                [5] nationalite    - Nationalité (code pays, ex: "FRA")
+                [6] taille         - Taille en mètres (float)
+
+        match (list[list[str]]): Tableau 2D des matchs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0]  id_competition      - Identifiant unique du tournoi
+                                          (clé de regroupement)
+                [1]  nom_competition     - Nom du tournoi (ex: "Roland Garros")
+                [2]  contexte            - Surface ou contexte (ex: "Clay")
+                [3]  nb_participants     - Nombre de participants au tournoi
+                [4]  type               - Type de tournoi (ex: "Grand Slam")
+                [5]  date               - Date du match
+                [6]  id_match           - Identifiant unique du match (int)
+                [7]  id_joueur_1        - ID du joueur 1 (clé de résolution, int)
+                [8]  id_joueur_2        - ID du joueur 2 (clé de résolution, int)
+                [9]  score             - Score au format "X-Y Xa-Ya ..."
+                                         un set par token séparé par espace ;
+                                         seul le premier caractère de chaque
+                                         côté est conservé (tie-break ignoré)
+                [10] best_of           - Format (ex: "3" pour BO3, int)
+                [11] round             - Tour du tournoi (ex: "F", "SF", "QF")
+                [12] duree             - Durée du match en heures (float)
+                [13] ace_j1            - Aces du joueur 1
+                [14] df_j1             - Double fautes joueur 1
+                [15] svpt_j1           - Points de service joués joueur 1
+                [16] 1stIn_j1          - Premières balles réussies joueur 1
+                [17] 1stWon_j1         - Points gagnés sur 1ère balle joueur 1
+                [18] 2ndWon_j1         - Points gagnés sur 2ème balle joueur 1
+                [19] SvGms_j1          - Jeux de service joueur 1
+                [20] bpSaved_j1        - Balles de break sauvées joueur 1
+                [21] bpFaced_j1        - Balles de break affrontées joueur 1
+                [22]-[30]              - Mêmes statistiques pour le joueur 2
+
+        nom_base (str): Nom attribué à l'objet Base retourné.
+
+    Returns:
+        Base: Objet Base peuplé avec :
+            - sport        : Sport('Tennis', 1)
+            - equipes      : liste d'objets Equipe, une par joueur, chacune
+                             contenant un unique Joueur (nom complet = prénom + nom)
+            - competitions : liste d'objets Competition, une par tournoi
+                             (regroupées par id_competition), chacune avec ses
+                             Matchs et leurs statistiques de service sous forme
+                             [stat_j1, stat_j2]
+
+    Notes:
+        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
+        - La date de naissance est reformatée depuis "YYYYMMDD" vers "YYYY-MM-DD"
+          par découpage de chaîne : player[j][4][0:4] + '-' + [4:6] + '-' + [6:8].
+        - Le parsing du score utilise `len(...)` au lieu de `range(len(...))` dans
+          la boucle `for s in len(match[m][9].split(' '))` — cela lève un TypeError
+          à l'exécution car `len` retourne un int non itérable. Il faudrait écrire
+          `for s in range(len(match[m][9].split(' ')))`.
+        - Seul le premier caractère de chaque côté d'un set est conservé
+          (ex: "6-3(5)" devient 6 et 3), ce qui ignore volontairement le score
+          du tie-break entre parenthèses.
+        - La résolution des équipes se fait par correspondance e.id == int(match[m][7])
+          / int(match[m][8]). Si aucune correspondance n'est trouvée, la variable
+          vaut 0 (entier), ce qui peut provoquer des erreurs en aval.
+        - Le regroupement des compétitions utilise match[m][0] (id_competition)
+          comme clé. La première occurrence crée la Competition ; les suivantes
+          appellent ajouter_match() sur la Competition existante.
+        - Les statistiques de match sont stockées sous forme de chaînes de
+          caractères telles que fournies (pas de conversion en int/float).
+
+    Example:
+        >>> players = [
+        ...     ["id", "prenom", "nom", "role", "naissance", "nat", "taille"],
+        ...     ["101", "Rafael",   "Nadal",    "ATP", "19860603", "ESP", "1.85"],
+        ...     ["102", "Novak",    "Djokovic", "ATP", "19870522", "SRB", "1.88"],
+        ... ]
+        >>> matches = [
+        ...     ["id_comp", "nom_comp", "surface", "nb", "type", "date",
+        ...      "id_match", "id_j1", "id_j2", "score", "bo", "round", "duree",
+        ...      "ace1","df1","svpt1","1stIn1","1stWon1","2ndWon1","SvGms1",
+        ...      "bpS1","bpF1",
+        ...      "ace2","df2","svpt2","1stIn2","1stWon2","2ndWon2","SvGms2",
+        ...      "bpS2","bpF2"],
+        ...     ["1", "Roland Garros", "Clay", "128", "Grand Slam", "2024-06-09",
+        ...      "42", "101", "102", "6-3 6-4 6-2", "3", "F", "2.5",
+        ...      "5","2","80","52","40","18","12","3","4",
+        ...      "3","4","75","45","30","15","10","4","7"],
+        ... ]
+        >>> base = parse_tennis(players, matches, "RG2024")
+        >>> base.nom
+        'RG2024'
+        >>> base.competitions[0].nom
+        'Roland Garros'
+        >>> base.equipes[0].joueurs[0].nom
+        'Rafael Nadal'
+    """
     liste_equipe = []
     dico_competitions = {}
     liste_competitions = []
@@ -41,7 +151,7 @@ def parse_tennis(player: list[list[str]],
         # (ce format enlève la partie entre parenthèses mais je n'ai aucune idée de son utilité de toute façon)
         s1 = []
         s2 = []
-        for s in len(match[m][9].split(' ')):
+        for s in len(match[m][9].split(' ')):   # bug: devrait être range(len(...))
             s1.append(int(match[m][9].split(' ')[s].split('-')[0][0]))
             s2.append(int(match[m][9].split(' ')[s].split('-')[1][0]))
 

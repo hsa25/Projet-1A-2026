@@ -10,7 +10,127 @@ def parse_basket(player: list[list[str]],
                  game: list[list[str]],
                  team: list[list[str]],
                  nom_base: str) -> Base:
+    """
+    Parse des données brutes de basketball et retourne un objet Base structuré.
 
+    Cette fonction transforme trois tableaux 2D (joueurs, matchs, équipes) en
+    un objet Base contenant l'ensemble des compétitions, équipes, joueurs et
+    résultats de matchs avec leurs statistiques détaillées.
+
+    Args:
+        player (list[list[str]]): Tableau 2D des joueurs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] id             - Identifiant unique du joueur
+                [1] prénom         - Prénom du joueur
+                [2] nom            - Nom de famille du joueur
+                [3] date_naissance - Date de naissance
+                [4] taille         - Taille du joueur
+                [5] poids          - Poids du joueur
+                [6] pseudo         - Surnom/pseudo du joueur
+                [7] role           - Poste du joueur
+                [8] id_equipe      - Identifiant de l'équipe (clé de jointure)
+
+        game (list[list[str]]): Tableau 2D des matchs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0]  nom de la compétition (clé de regroupement)
+                [1]  type de la compétition
+                [2]  id de l'équipe 1
+                [3]  id du match
+                [4]  date du match
+                [5]  durée du match
+                [6]  fgm   équipe 1 - Field Goals Made
+                [7]  fga   équipe 1 - Field Goals Attempted
+                [8]  fg_pct  équipe 1 - Field Goal Percentage
+                [9]  fg3m  équipe 1 - 3-Point Field Goals Made
+                [10] fg3a  équipe 1 - 3-Point Field Goals Attempted
+                [11] fg3_pct équipe 1 - 3-Point Percentage
+                [12] ftm   équipe 1 - Free Throws Made
+                [13] fta   équipe 1 - Free Throws Attempted
+                [14] ft_pct  équipe 1 - Free Throw Percentage
+                [15] oreb  équipe 1 - Offensive Rebounds
+                [16] dreb  équipe 1 - Defensive Rebounds
+                [17] reb   équipe 1 - Total Rebounds
+                [18] ast   équipe 1 - Assists
+                [19] stl   équipe 1 - Steals
+                [20] blk   équipe 1 - Blocks
+                [21] tov   équipe 1 - Turnovers
+                [22] pf    équipe 1 - Personal Fouls
+                [23] score_1       - Score final équipe 1
+                [24] id de l'équipe 2
+                [25]-[41]          - Mêmes statistiques que [6]-[22] pour l'équipe 2
+                [42] score_2       - Score final équipe 2
+
+        team (list[list[str]]): Tableau 2D des équipes.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] id           - Identifiant unique de l'équipe
+                [1] nom          - Nom complet de l'équipe
+                [2] abrev        - Abréviation (ex: "LAL")
+                [3] surnom       - Surnom de l'équipe (ex: "Lakers")
+                [4] region_small - Région courte (ex: "LA")
+                [5] region_big   - Région complète (ex: "Los Angeles")
+
+        nom_base (str): Nom attribué à l'objet Base retourné.
+
+    Returns:
+        Base: Objet Base peuplé avec :
+            - sport        : Sport('Basketball')
+            - equipes      : liste d'objets Equipe avec leurs Joueurs
+            - competitions : liste d'objets Competition regroupant leurs Matchs,
+                             chaque Match contenant un dictionnaire de statistiques
+                             détaillées pour les deux équipes
+
+    Notes:
+        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
+        - Les joueurs sont rattachés à leur équipe via la correspondance
+          player[j][8] == equipe.id. Un joueur sans équipe correspondante
+          est silencieusement ignoré.
+        - La résolution des équipes dans les matchs se fait par correspondance
+          game[m][2]/game[m][24] == equipe.id. Si aucune correspondance n'est
+          trouvée, la variable d'équipe vaut 0 (entier), ce qui peut provoquer
+          des erreurs en aval — les données doivent être cohérentes.
+        - Le regroupement des compétitions utilise game[m][0] comme clé de
+          dictionnaire. La première occurrence crée la Competition ; les
+          suivantes appellent ajouter_match() sur la Competition existante.
+        - Les statistiques de chaque Match sont stockées dans un dictionnaire
+          stats où chaque valeur est une liste [stat_equipe_1, stat_equipe_2].
+
+    Example:
+        >>> teams = [
+        ...     ["id", "nom", "abrev", "surnom", "region_small", "region_big"],
+        ...     ["1", "Los Angeles Lakers", "LAL", "Lakers", "LA", "Los Angeles"],
+        ...     ["2", "Boston Celtics",     "BOS", "Celtics", "BOS", "Boston"],
+        ... ]
+        >>> players = [
+        ...     ["id", "prenom", "nom", "naissance", "taille", "poids",
+        ...      "pseudo", "role", "id_equipe"],
+        ...     ["10", "LeBron", "James", "1984-12-30", "206", "113",
+        ...      "King James", "SF", "1"],
+        ... ]
+        >>> games = [
+        ...     ["comp", "type", "id_e1", "id_match", "date", "duree",
+        ...      "fgm1","fga1","fg_pct1","fg3m1","fg3a1","fg3_pct1",
+        ...      "ftm1","fta1","ft_pct1","oreb1","dreb1","reb1",
+        ...      "ast1","stl1","blk1","tov1","pf1","score1",
+        ...      "id_e2",
+        ...      "fgm2","fga2","fg_pct2","fg3m2","fg3a2","fg3_pct2",
+        ...      "ftm2","fta2","ft_pct2","oreb2","dreb2","reb2",
+        ...      "ast2","stl2","blk2","tov2","pf2","score2"],
+        ...     ["NBA 2024", "Regular", "1", "42", "2024-01-15", "48",
+        ...      "40","85","0.47","12","30","0.40",
+        ...      "18","22","0.82","10","35","45",
+        ...      "25","8","5","12","20","110",
+        ...      "2",
+        ...      "38","80","0.48","10","28","0.36",
+        ...      "14","18","0.78","8","30","38",
+        ...      "22","7","4","15","18","100"],
+        ... ]
+        >>> base = parse_basket(players, games, teams, "NBA_2024")
+        >>> base.nom
+        'NBA_2024'
+    """
     liste_equipes = []
     dico_compet = {}
     liste_competitions = []

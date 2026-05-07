@@ -12,7 +12,106 @@ def parse_volley(player: list[list[str]],
                  match: list[list[str]],
                  country: list[list[str]],
                  nom_base: str) -> Base:
+    """
+    Parse des données brutes de volleyball et retourne un objet Base structuré.
 
+    Cette fonction transforme quatre tableaux 2D (joueurs, coachs, matchs,
+    pays/équipes nationales) en un objet Base contenant une unique Competition
+    regroupant l'ensemble des équipes nationales, coachs, joueurs et matchs
+    du tournoi.
+
+    Args:
+        player (list[list[str]]): Tableau 2D des joueurs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] nom            - Nom du joueur
+                [1] abrev_equipe   - Abréviation du pays (clé de jointure)
+                [2] taille         - Taille en mètres (float)
+                [3] date_naissance - Date de naissance
+                [4] nationalite    - Nationalité du joueur
+                [5] pseudo         - Numéro de maillot ou surnom
+
+        coach (list[list[str]]): Tableau 2D des coachs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] nom            - Nom du coach
+                [1] date_naissance - Date de naissance
+                [2] genre          - Genre du coach
+                [3] role           - Rôle (ex: "Head Coach", "Assistant")
+                [4] abrev_equipe   - Abréviation du pays (clé de jointure)
+
+        match (list[list[str]]): Tableau 2D des matchs.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] date         - Date du match
+                [1] round        - Tour du tournoi
+                [2] abrev_eq1    - Abréviation équipe 1 (clé de résolution)
+                [3] abrev_eq2    - Abréviation équipe 2 (clé de résolution)
+                [4] score_1      - Score final équipe 1
+                [5] score_2      - Score final équipe 2
+
+        country (list[list[str]]): Tableau 2D des équipes nationales.
+            La ligne 0 est ignorée (en-tête).
+            Format des lignes suivantes :
+                [0] abrev  - Abréviation du pays (clé de jointure avec joueurs,
+                             coachs et matchs)
+                [1] surnom - Surnom de l'équipe (ex: "Les Bleus")
+                [2] nom    - Nom complet du pays (ex: "France")
+
+        nom_base (str): Nom attribué à l'objet Base retourné. Utilisé également
+            comme nom de l'unique Competition créée.
+
+    Returns:
+        Base: Objet Base peuplé avec :
+            - sport        : Sport('Volleyball', 13)
+            - equipes      : liste d'objets Equipe (équipes nationales) avec
+                             leurs Joueurs et Coachs
+            - competitions : liste contenant une unique Competition dont le nom
+                             est nom_base, regroupant tous les Matchs
+
+    Notes:
+        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
+        - Il existe un bug dans la boucle de création des matchs : `for m in
+          range(1, match)` utilise le tableau match lui-même au lieu de sa
+          longueur. Il faudrait écrire `range(1, len(match))`.
+        - Les coachs et joueurs sont rattachés à leur équipe par correspondance
+          d'abréviation (coach[c][4] et player[j][1] == equipe.abrev). Un coach
+          ou joueur sans équipe correspondante est silencieusement ignoré.
+        - La résolution des équipes dans les matchs se fait par correspondance
+          match[m][2]/match[m][3] == equipe.abrev. Si aucune correspondance
+          n'est trouvée, la variable d'équipe vaut 0 (entier), ce qui peut
+          provoquer des erreurs en aval.
+        - La taille_equipe passée à Sport est 13, ce qui correspond au nombre
+          de joueurs dans un effectif de volleyball (6 titulaires + remplaçants).
+        - Tous les matchs appartiennent à une seule Competition portant le nom
+          de nom_base.
+
+    Example:
+        >>> countries = [
+        ...     ["abrev", "surnom", "nom"],
+        ...     ["FRA", "Les Bleus",  "France"],
+        ...     ["BRA", "Seleção",    "Brazil"],
+        ... ]
+        >>> coaches = [
+        ...     ["nom", "naissance", "genre", "role", "equipe"],
+        ...     ["Andrea Giani", "1970-06-08", "M", "Head Coach", "FRA"],
+        ... ]
+        >>> players = [
+        ...     ["nom", "equipe", "taille", "naissance", "nationalite", "pseudo"],
+        ...     ["Earvin Ngapeth", "FRA", "1.94", "1991-02-12", "French", "9"],
+        ... ]
+        >>> matches = [
+        ...     ["date", "round", "eq1", "eq2", "s1", "s2"],
+        ...     ["2024-08-10", "Pool A", "FRA", "BRA", "3", "1"],
+        ... ]
+        >>> base = parse_volley(players, coaches, matches, countries, "Olympics2024")
+        >>> base.nom
+        'Olympics2024'
+        >>> len(base.competitions)
+        1
+        >>> base.equipes[0].nom
+        'France'
+    """
     liste_equipes = []
     liste_matchs = []
 
@@ -44,7 +143,7 @@ def parse_volley(player: list[list[str]],
                                         pseudo=player[j][5]))
 
     # Création des matchs
-    for m in range(1, match):
+    for m in range(1, match):       # bug: devrait être range(1, len(match))
         # Recherche des équipes en fonction de leur nom
         j1 = 0
         j2 = 0
