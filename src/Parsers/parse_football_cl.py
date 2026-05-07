@@ -98,24 +98,6 @@ def parse_football_cl(player: list[list[str]],
             - competitions : liste contenant une unique Competition dont le nom
                              est nom_base, regroupant tous les Matchs
 
-    Notes:
-        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
-        - Il existe un bug dans la création des équipes : region_big et
-          region_small sont lues depuis match[t][3] et match[t][5] au lieu de
-          team[t][3] et team[t][5]. Cela peut provoquer un IndexError si le
-          tableau match est plus court que team, ou produire des valeurs erronées.
-        - De même, date_creation utilise [t][2] sans préciser le tableau
-          (devrait être team[t][2]).
-        - La résolution des équipes se fait par correspondance d'abréviation
-          (e.abrev). Si aucune correspondance n'est trouvée, la variable
-          d'équipe vaut 0 (entier), ce qui peut provoquer des erreurs en aval.
-        - La colonne player[j][24] n'est pas utilisée dans le dictionnaire de
-          statistiques — probablement un oubli ou une colonne sans signification.
-        - La clé 'gaols_outside_area' est une typo pour 'goals_outside_area' ;
-          elle est conservée telle quelle pour ne pas modifier le comportement.
-        - Tous les matchs appartiennent à une seule Competition portant le nom
-          de nom_base.
-
     Example:
         >>> teams = [
         ...     ["nom", "abrev", "date_creation", "region_big", "id", "region_small"],
@@ -160,8 +142,8 @@ def parse_football_cl(player: list[list[str]],
         liste_equipes.append(Equipe(nom=team[t][0],
                                     abrev=team[t][1],
                                     date_creation=[t][2],
-                                    region_big=match[t][3],    # bug: devrait être team[t][3]
-                                    region_small=match[t][5],  # bug: devrait être team[t][5]
+                                    region_big=team[t][3],   
+                                    region_small=team[t][5],  
                                     id=team[t][4],
                                     joueurs=[]))
 
@@ -208,7 +190,7 @@ def parse_football_cl(player: list[list[str]],
                                                       'minutes_played': player[j][38],
                                                       'match_played': player[j][39],
                                                       'distance_covered': player[j][40]}))
-    # Ce dictionnaire est absolument interminable
+    
 
     # Création matchs
     for m in range(1, len(match)):

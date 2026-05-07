@@ -74,26 +74,6 @@ def parse_tennis(player: list[list[str]],
                              Matchs et leurs statistiques de service sous forme
                              [stat_j1, stat_j2]
 
-    Notes:
-        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
-        - La date de naissance est reformatée depuis "YYYYMMDD" vers "YYYY-MM-DD"
-          par découpage de chaîne : player[j][4][0:4] + '-' + [4:6] + '-' + [6:8].
-        - Le parsing du score utilise `len(...)` au lieu de `range(len(...))` dans
-          la boucle `for s in len(match[m][9].split(' '))` — cela lève un TypeError
-          à l'exécution car `len` retourne un int non itérable. Il faudrait écrire
-          `for s in range(len(match[m][9].split(' ')))`.
-        - Seul le premier caractère de chaque côté d'un set est conservé
-          (ex: "6-3(5)" devient 6 et 3), ce qui ignore volontairement le score
-          du tie-break entre parenthèses.
-        - La résolution des équipes se fait par correspondance e.id == int(match[m][7])
-          / int(match[m][8]). Si aucune correspondance n'est trouvée, la variable
-          vaut 0 (entier), ce qui peut provoquer des erreurs en aval.
-        - Le regroupement des compétitions utilise match[m][0] (id_competition)
-          comme clé. La première occurrence crée la Competition ; les suivantes
-          appellent ajouter_match() sur la Competition existante.
-        - Les statistiques de match sont stockées sous forme de chaînes de
-          caractères telles que fournies (pas de conversion en int/float).
-
     Example:
         >>> players = [
         ...     ["id", "prenom", "nom", "role", "naissance", "nat", "taille"],
@@ -139,7 +119,6 @@ def parse_tennis(player: list[list[str]],
     # Création des compétitions
     for m in range(1, len(match)):
         # Association des équipes
-        # (ce code est tellement répété, une fonction aurait probablement été plus utile)
         j1 = 0
         j2 = 0
         for e in liste_equipe:
@@ -148,7 +127,6 @@ def parse_tennis(player: list[list[str]],
             if e.id == int(match[m][8]):
                 j2 = e
         # Modification du format du score
-        # (ce format enlève la partie entre parenthèses mais je n'ai aucune idée de son utilité de toute façon)
         s1 = []
         s2 = []
         for s in len(match[m][9].split(' ')):   # bug: devrait être range(len(...))

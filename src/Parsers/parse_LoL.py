@@ -90,26 +90,6 @@ def parse_LoL(player: list[list[str]],
                              statistiques de jeu (kills, assists, deaths, gold,
                              turrets, dragons, barons) sous forme [eq1, eq2]
 
-    Notes:
-        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
-        - Les boucles d'ajout des coachs et des joueurs utilisent `len(1, len(x))`
-          au lieu de `range(1, len(x))` — cela lève un TypeError à l'exécution
-          car `len` n'accepte pas deux arguments. Il faudrait écrire `range(...)`.
-        - Dans la boucle d'ajout des joueurs, les champs sont lus depuis
-          player[c][...] (indice de boucle des coachs) au lieu de player[j][...],
-          produisant des données erronées ou un IndexError.
-        - La résolution des équipes dans les matchs se fait par abréviation
-          (e.abrev). Si aucune correspondance n'est trouvée, la variable vaut 0
-          (entier), ce qui peut provoquer des erreurs en aval.
-        - Le score est déduit de match[m][7] (abréviation du gagnant) : si
-          j1.abrev correspond au gagnant alors score_1=1/score_2=0, sinon
-          score_1=0/score_2=1. Si j1 vaut 0 (non résolu), j1.abrev lève
-          un AttributeError.
-        - L'ordre du match est une chaîne construite par concaténation :
-          match[m][2] + '/' + match[m][3] + '/' + match[m][4].
-        - Tous les matchs appartiennent à une seule Competition portant le nom
-          de nom_base.
-
     Example:
         >>> teams = [
         ...     ["nom", "abrev", "region_small", "region_big"],

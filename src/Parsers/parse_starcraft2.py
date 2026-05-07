@@ -55,23 +55,6 @@ def parse_starcraft2(player: list[list[str]],
             - competitions : liste contenant une unique Competition dont le nom
                              est nom_base, regroupant tous les Matchs
 
-    Notes:
-        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
-        - Chaque Equipe est créée à partir d'un seul joueur : player[i][5]
-          fournit le nom de l'équipe et player[i][0] le pseudo du joueur unique
-          qu'elle contient. Cela reflète la nature individuelle de StarCraft II.
-        - La résolution des équipes dans les matchs se fait par correspondance
-          match[j][4]/match[j][5] == equipe.joueurs[0].pseudo, et non par nom
-          d'équipe comme dans les autres parsers. Si aucune correspondance n'est
-          trouvée, la variable d'équipe vaut 0 (entier), ce qui peut provoquer
-          des erreurs en aval — les pseudos doivent être cohérents entre les
-          deux tableaux.
-        - score_1 et score_2 sont stockés sous forme de listes à un élément
-          ([match[j][6]] et [match[j][7]]) sans conversion en int — les valeurs
-          restent des chaînes de caractères.
-        - Tous les matchs appartiennent à une seule Competition portant le nom
-          de nom_base.
-
     Example:
         >>> players = [
         ...     ["pseudo", "nom", "nationalite", "naissance", "race", "equipe"],

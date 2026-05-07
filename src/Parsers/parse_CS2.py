@@ -69,22 +69,6 @@ def parse_CS2(player: list[list[str]],
             - competitions : liste contenant une unique Competition dont le nom
                              est nom_base, regroupant tous les Matchs
 
-    Notes:
-        - La ligne 0 de chaque tableau est toujours ignorée (en-tête).
-        - Les coachs puis les joueurs sont rattachés à leur équipe via
-          correspondance par nom (coach[c][4] == equipe.nom et
-          player[j][5] == equipe.nom). Un coach ou joueur sans équipe
-          correspondante est silencieusement ignoré.
-        - La résolution des équipes dans les matchs se fait par correspondance
-          match[m][4]/match[m][5] == equipe.nom. Si aucune correspondance
-          n'est trouvée, la variable d'équipe vaut 0 (entier), ce qui peut
-          provoquer des erreurs en aval — les données doivent être cohérentes.
-        - Il existe un bug dans la boucle d'ajout des joueurs : le pseudo est
-          lu depuis player[c][0] (indice de boucle des coachs) au lieu de
-          player[j][0]. Il faudrait écrire player[j][0].
-        - Tous les matchs appartiennent à une seule Competition portant le nom
-          de nom_base, ce qui reflète le principe "1 base = 1 compétition".
-
     Example:
         >>> teams = [
         ...     ["nom", "abrev", "region_small", "region_big"],
@@ -137,7 +121,7 @@ def parse_CS2(player: list[list[str]],
     for j in range(1, len(player)):
         for e in liste_equipes:
             if e.nom == player[j][5]:
-                e.ajouter_joueur(Joueur(pseudo=player[c][0],  # bug: devrait être player[j][0]
+                e.ajouter_joueur(Joueur(pseudo=player[j][0], 
                                         nom=player[j][1],
                                         nationalite=player[j][2],
                                         date_naissance=player[j][3],
@@ -146,7 +130,6 @@ def parse_CS2(player: list[list[str]],
     # Création des matchs
     for m in range(1, len(match)):
         # Sélection des équipes
-        # (Décidément ce code revient vraiment partout de la même façon)
         j1 = 0
         j2 = 0
         for e in liste_equipes:
@@ -162,9 +145,6 @@ def parse_CS2(player: list[list[str]],
                                   best_of=match[m][3],
                                   score_1=match[m][6],
                                   score_2=match[m][7]))
-
-    # Puisque 1 base de donnée = 1 compétition alors le nom est le même
-    # (ça évite de perdre le nom à la sauvegarde ou de devoir recréer une variable)
     return (Base(nom=nom_base,
                  sport=Sport(nom='Counter Strike 2',
                              taille_equipe=5),
