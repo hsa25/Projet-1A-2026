@@ -26,7 +26,7 @@ class Equipe():
     def __init__(self,
                  nom: str,
                  joueurs: list[Joueur],
-                 id: int = None,
+                 id: int | str = None,
                  abrev: str = None,
                  surnom: str = None,
                  region_small: str = None,
@@ -106,6 +106,10 @@ class Equipe():
         """list[Coach] | None : La liste des entraîneurs de l'équipe."""
         return self.__coachs
 
+    @property
+    def id(self) -> int | str | None:
+        return self.__id
+
     def __str__(self) -> str:
         """
         Retourne une représentation lisible de l'équipe.
@@ -127,3 +131,8 @@ class Equipe():
                 f"{self.__abrev}, {self.__surnom}, {self.__region_small}, "
                 f"{self.__region_big}, {self.__date_creation}, {self.__joueurs})")
     
+    def ajouter_joueur(self, other: Joueur):
+        self.__joueurs.append(other)
+
+    def ajouter_coach(self, other: Coach):
+        self.__joueurs.append(other)
