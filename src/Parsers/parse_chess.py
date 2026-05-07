@@ -57,25 +57,7 @@ def parse_chess(player: list[list[str]],
                              avec ses trois classements Elo en statistiques
             - competitions : liste contenant une unique Competition dont le nom
                              est nom_base, regroupant tous les Matchs
-
-    Notes:
-        - La ligne 0 de player et match est toujours ignorée (en-tête).
-        - Le nettoyage des noms (suppress '"' et ',') est effectué via
-          str.replace() mais le résultat n'est pas réassigné — les chaînes
-          Python étant immuables, ce nettoyage est actuellement sans effet.
-          Il faudrait écrire : player[i][0] = player[i][0].replace('"', '').
-        - La résolution des équipes se fait par correspondance de noms entre
-          match[j][3]/match[j][4] et liste_equipe. Si aucune correspondance
-          n'est trouvée, la variable d'équipe vaut 0 (entier), ce qui peut
-          provoquer des erreurs en aval — les données doivent être cohérentes.
-        - Contrairement aux autres parsers, il n'y a pas de regroupement par
-          compétition : tous les matchs appartiennent à une seule Competition
-          portant le nom de nom_base.
-        - Chaque Equipe est créée avec un unique Joueur portant le même nom,
-          reflétant la structure individuelle des épreuves d'échecs.
-        - Les statistiques Elo sont stockées sous forme de chaînes de caractères
-          telles que fournies dans le tableau source (pas de conversion en int/float).
-
+                             
     Example:
         >>> players = [
         ...     ["nom", "id", "naissance", "genre", "pays", "titre",

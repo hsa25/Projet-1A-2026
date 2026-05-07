@@ -72,27 +72,7 @@ def parse_foot_el(chemin: str, nom_base: str) -> Base:
                              (ligue, saison), nommées selon le format
                              "<nom_ligue> <saison>" (ex: "France Ligue 1 2015/2016"),
                              de type "Championnat", chacune regroupant ses Matchs
-
-    Notes:
-        - La ligne 0 de chaque fichier CSV est toujours ignorée (en-tête).
-        - Les fichiers sont ouverts sans gestionnaire de contexte (sans `with`) :
-          ils ne sont pas explicitement fermés après lecture. Cela fonctionne
-          mais n'est pas recommandé — préférer `with open(...) as f`.
-        - Les joueurs sont bien créés dans liste_joueurs mais ne sont jamais
-          rattachés à une équipe. La liste est construite puis inutilisée.
-        - La résolution des équipes dans les matchs se fait par correspondance
-          fichier_matchs[j][7]/[8] == equipe.id. Si aucune correspondance
-          n'est trouvée, equipe_domicile ou equipe_exterieur vaut None, ce qui
-          peut provoquer des erreurs en aval.
-        - Le regroupement des compétitions utilise la clé "<id_ligue>_<saison>"
-          (ex: "1_2015/2016"). La première occurrence crée l'entrée ; les
-          suivantes ajoutent un Match à la liste existante.
-        - Si un id_ligue présent dans match.csv est absent de league.csv,
-          dictionnaire_ligues.get() retourne {"nom": "Inconnu", "pays": ""} par
-          défaut, évitant un KeyError.
-        - Les colonnes [0] de team_2.csv et player_2.csv (index 0) ne sont pas
-          utilisées ; les identifiants métier sont en colonne [1].
-
+                             
     Example:
         >>> base = parse_foot_el("data/football/european", "EuropeanLeagues")
         >>> base.nom
@@ -118,7 +98,7 @@ def parse_foot_el(chemin: str, nom_base: str) -> Base:
     # 2. Création de dictionnaires pour lier les ID de Pays et Ligues facilement
     dictionnaire_pays = {}
     for i in range(1, len(fichier_pays)):
-        dictionnaire_pays[fichier_pays[i][0]] = fichier_pays[i][1]  # {id_pays: nom_pays}
+        dictionnaire_pays[fichier_pays[i][0]] = fichier_pays[i][1]  
 
     dictionnaire_ligues = {}
     for i in range(1, len(fichier_ligues)):
@@ -148,20 +128,19 @@ def parse_foot_el(chemin: str, nom_base: str) -> Base:
         equipe_exterieur = None
 
         for k in range(len(liste_equipes)):
-            if fichier_matchs[j][7] == liste_equipes[k].id:    # home_team_api_id (indice 7)
+            if fichier_matchs[j][7] == liste_equipes[k].id:    
                 equipe_domicile = liste_equipes[k]
-            if fichier_matchs[j][8] == liste_equipes[k].id:    # away_team_api_id (indice 8)
+            if fichier_matchs[j][8] == liste_equipes[k].id:   
                 equipe_exterieur = liste_equipes[k]
 
-        id_ligue = fichier_matchs[j][2]   # league_id (indice 2)
-        saison = fichier_matchs[j][3]     # season (indice 3, ex: "2015/2016")
+        id_ligue = fichier_matchs[j][2]  
+        saison = fichier_matchs[j][3]     
 
-        # Clé unique pour chaque saison de chaque ligue (ex: "Ligue 1 + 2015/2016")
         cle_comp = f"{id_ligue}_{saison}"
 
         if cle_comp not in competitions:
             info_ligue = dictionnaire_ligues.get(id_ligue, {"nom": "Inconnu", "pays": ""})
-            nom_competition = f"{info_ligue['nom']} {saison}"  # Résultat : "France Ligue 1 2015/2016"
+            nom_competition = f"{info_ligue['nom']} {saison}"  
 
             competitions[cle_comp] = [nom_competition,
                                       "",

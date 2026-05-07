@@ -143,7 +143,7 @@ def parse_volley(player: list[list[str]],
                                         pseudo=player[j][5]))
 
     # Création des matchs
-    for m in range(1, match):       # bug: devrait être range(1, len(match))
+    for m in range(1, len(match)):       
         # Recherche des équipes en fonction de leur nom
         j1 = 0
         j2 = 0
