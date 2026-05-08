@@ -66,3 +66,11 @@ class Competition:
             None
         """
         self.__matchs.append(other)
+
+    @property
+    def nom(self):
+        return self.__nom
+
+    @property
+    def matchs(self):
+        return self.__matchs
