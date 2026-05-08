@@ -105,7 +105,7 @@ def parse_starcraft2(player: list[list[str]],
                                   score_2=[match[j][7]]))
 
     return (Base(nom=nom_base,
-                 sport=Sport('Starcraft2', 1),
+                 sport=Sport('Starcraft2', 'starcraft_2'),
                  equipes=liste_equipe,
                  competitions=[Competition(nom=nom_base,
                                            matchs=liste_matchs)]))

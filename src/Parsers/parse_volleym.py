@@ -7,11 +7,11 @@ from ..Model.Sport import Sport
 from ..Model.Coach import Coach
 
 
-def parse_volley(player: list[list[str]],
-                 coach: list[list[str]],
-                 match: list[list[str]],
-                 country: list[list[str]],
-                 nom_base: str) -> Base:
+def parse_volleym(player: list[list[str]],
+                  coach: list[list[str]],
+                  match: list[list[str]],
+                  country: list[list[str]],
+                  nom_base: str) -> Base:
     """
     Parse des données brutes de volleyball et retourne un objet Base structuré.
 
@@ -160,7 +160,7 @@ def parse_volley(player: list[list[str]],
                                   equipe_2=j2))
 
     return (Base(nom=nom_base,
-                 sport=Sport('Volleyball', 13),
+                 sport=Sport('Volley masculin', 'volleyballm'),
                  competitions=[Competition(nom=nom_base,
                                            matchs=liste_matchs)],
                  equipes=liste_equipes))

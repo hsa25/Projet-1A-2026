@@ -146,8 +146,7 @@ def parse_CS2(player: list[list[str]],
                                   score_1=match[m][6],
                                   score_2=match[m][7]))
     return (Base(nom=nom_base,
-                 sport=Sport(nom='Counter Strike 2',
-                             taille_equipe=5),
+                 sport=Sport('Counter Strike 2', 'counter_strike_2'),
                  equipes=liste_equipes,
                  competitions=[Competition(nom=nom_base,
                                            matchs=liste_matchs)]))

@@ -32,3 +32,8 @@ class Match:
         self.__contexte = contexte
         self.__stats = stats
 
+    def afficher_match(self) -> str:
+        return (f"{self.__round}"
+                f"{self.__equipe_1.nom}-{self.__equipe_2.nom}"
+                f"{self.__equipe_1.nom} : {self.__score_1}"
+                f"{self.__equipe_2.nom} : {self.__score_2}")

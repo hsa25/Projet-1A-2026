@@ -142,7 +142,8 @@ def parse_basket(player: list[list[str]],
                                     abrev=team[t][2],
                                     surnom=team[t][3],
                                     region_big=team[t][5],
-                                    region_small=team[t][4]))
+                                    region_small=team[t][4],
+                                    joueurs=[]))
 
     # Ajout joueurs
     for j in range(1, len(player)):
@@ -223,6 +224,6 @@ def parse_basket(player: list[list[str]],
         liste_competitions.append(dico_compet[comp])
 
     return (Base(nom=nom_base,
-                 sport=Sport('Basketball'),
+                 sport=Sport('Basketball', 'basketball'),
                  competitions=liste_competitions,
                  equipes=liste_equipes))

@@ -7,8 +7,8 @@ from ..Model.Sport import Sport
 
 
 def parse_badminton(player: list[list[str]],
-                     match: list[list[str]],
-                     nom_base: str) -> Base:
+                    match: list[list[str]],
+                    nom_base: str) -> Base:
     """
     Parse des données brutes de badminton et retourne un objet Base structuré.
 
@@ -54,13 +54,13 @@ def parse_badminton(player: list[list[str]],
 
     Example:
         >>> players = [
-        ...     ["Name", "Region", "Country"],          
+        ...     ["Name", "Region", "Country"],
         ...     ["Viktor Axelsen", "EUR", "Denmark"],
         ...     ["Kento Momota",   "ASI", "Japan"],
         ... ]
         >>> matches = [
         ...     ["Comp", "City", "Country", "Date", "Type", "Round",
-        ...      "P1", "P2", "?", "S1", "S2", "S3"],  
+        ...      "P1", "P2", "?", "S1", "S2", "S3"],
         ...     ["BWF WC", "Paris", "France", "2024-08-05", "WC", "QF",
         ...      "Viktor Axelsen", "Kento Momota", "", "21-18", "19-21", "21-15"],
         ... ]
@@ -123,6 +123,6 @@ def parse_badminton(player: list[list[str]],
                                              matchs=competitions[comp][3]))
 
     return (Base(nom=nom_base,
-                 sport=Sport('Badminton', 1),
+                 sport=Sport('Badminton', 'badminton'),
                  competitions=liste_competition,
                  equipes=liste_equipe))

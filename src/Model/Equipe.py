@@ -32,8 +32,7 @@ class Equipe():
                  region_small: str = None,
                  region_big: str = None,
                  date_creation: date = None,
-                 coachs: list[Coach] = None),
-                 sport : str = None -> None:
+                 coachs: list[Coach] = None) -> None:
         """
         Initialise une instance d'Equipe.
 
@@ -68,7 +67,6 @@ class Equipe():
         self.__date_creation = date_creation
         self.__joueurs = joueurs
         self.__coachs = coachs
-        self.__sport = sport
 
     @property
     def nom(self) -> str:

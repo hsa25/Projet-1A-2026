@@ -97,14 +97,14 @@ def parse_chess(player: list[list[str]],
         liste_equipe.append(Equipe(nom=player[i][0],
                                    region_big=player[i][4],
                                    joueurs=[Joueur(nom=player[i][0],
-                                                  id=int(player[i][1]),
-                                                  date_naissance=player[i][2],
-                                                  genre=player[i][3],
-                                                  role=player[i][5],
-                                                  statistiques={'elo_standard': player[i][6],
-                                                                'elo_rapide': player[i][7],
-                                                                'elo_blitz': player[i][8]}
-                                                  )]))
+                                                   id=int(player[i][1]),
+                                                   date_naissance=player[i][2],
+                                                   genre=player[i][3],
+                                                   role=player[i][5],
+                                                   statistiques={'elo_standard': player[i][6],
+                                                                 'elo_rapide': player[i][7],
+                                                                 'elo_blitz': player[i][8]}
+                                                   )]))
 
     for j in range(1, len(match)):
         j1 = 0
@@ -125,7 +125,7 @@ def parse_chess(player: list[list[str]],
                                          'seed_joueur_2': float(match[j][8])}))
 
     return Base(nom=nom_base,
-                sport=Sport('Échecs', 1),
+                sport=Sport('Échecs', 'chess'),
                 equipes=liste_equipe,
                 competitions=[Competition(nom=nom_base,
                                           matchs=liste_matchs)])

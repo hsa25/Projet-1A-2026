@@ -143,7 +143,7 @@ def parse_LoL(player: list[list[str]],
                                       role=coach[c][4]))
 
     # Ajout des joueurs
-    for j in len(1, len(player)):         
+    for j in range(1, len(player)):         
         for e in liste_equipes:
             if e.nom == player[j][5]:
                 e.ajouter_joueur(Joueur(pseudo=player[j][0],   
@@ -185,8 +185,7 @@ def parse_LoL(player: list[list[str]],
                                          'barons': [int(match[m][15]), int(match[m][22])]}))
 
     return (Base(nom=nom_base,
-                 sport=Sport(nom='League of Legends',
-                             taille_equipe=5),
+                 sport=Sport('League of Legends', 'league_of_legends'),
                  equipes=liste_equipes,
                  competitions=[Competition(nom=nom_base,
                                            matchs=liste_matchs)]))

@@ -39,3 +39,19 @@ class Base:
         self.__sport = sport
         self.__competitions = competitions
         self.__equipes = equipes
+
+    @property
+    def nom(self):
+        return self.__nom
+
+    @property
+    def sport(self):
+        return self.__sport
+
+    @property
+    def equipes(self):
+        return self.__equipes
+
+    @property
+    def competitions(self):
+        return self.__competitions

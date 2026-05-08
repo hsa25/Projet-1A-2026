@@ -6,9 +6,9 @@ from ..Model.Base import Base
 from ..Model.Sport import Sport
 
 
-def parse_tennis(player: list[list[str]],
-                 match: list[list[str]],
-                 nom_base: str) -> Base:
+def parse_tennism(player: list[list[str]],
+                  match: list[list[str]],
+                  nom_base: str) -> Base:
     """
     Parse des données brutes de tennis et retourne un objet Base structuré.
 
@@ -129,7 +129,7 @@ def parse_tennis(player: list[list[str]],
         # Modification du format du score
         s1 = []
         s2 = []
-        for s in len(match[m][9].split(' ')):   # bug: devrait être range(len(...))
+        for s in range(len(match[m][9].split(' '))):
             s1.append(int(match[m][9].split(' ')[s].split('-')[0][0]))
             s2.append(int(match[m][9].split(' ')[s].split('-')[1][0]))
 
@@ -185,6 +185,6 @@ def parse_tennis(player: list[list[str]],
         liste_competitions.append(dico_competitions[comp])
 
     return (Base(nom=nom_base,
-                 sport=Sport('Tennis', 1),
+                 sport=Sport('Tennis masculin', 'tennism'),
                  competitions=liste_competitions,
                  equipes=liste_equipe))

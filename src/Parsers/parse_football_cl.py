@@ -141,9 +141,9 @@ def parse_football_cl(player: list[list[str]],
     for t in range(1, len(team)):
         liste_equipes.append(Equipe(nom=team[t][0],
                                     abrev=team[t][1],
-                                    date_creation=[t][2],
-                                    region_big=team[t][3],   
-                                    region_small=team[t][5],  
+                                    date_creation=team[t][2],
+                                    region_big=team[t][3],
+                                    region_small=team[t][5],
                                     id=team[t][4],
                                     joueurs=[]))
 
@@ -211,6 +211,6 @@ def parse_football_cl(player: list[list[str]],
                                   score_2=match[m][8]))
 
     return (Base(nom=nom_base,
-                 sport=Sport('Football Champions League'),
+                 sport=Sport('Football Champions League', 'football_champions_league'),
                  competitions=[Competition(nom=nom_base, matchs=liste_matchs)],
                  equipes=liste_equipes))
