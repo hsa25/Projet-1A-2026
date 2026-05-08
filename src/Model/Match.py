@@ -37,3 +37,37 @@ class Match:
                 f"{self.__equipe_1.nom}-{self.__equipe_2.nom}"
                 f"{self.__equipe_1.nom} : {self.__score_1}"
                 f"{self.__equipe_2.nom} : {self.__score_2}")
+
+    @property
+    def equipe_1(self):
+        return self.__equipe_1
+
+    @property
+    def equipe_2(self):
+        return self.__equipe_2
+
+    @property
+    def score_1(self):
+        return self.__score_1
+
+    @property
+    def score_2(self):
+        return self.__score_2
+
+    @property
+    def round(self):
+        return self.__round
+
+    @property
+    def date(self):
+        return self.__date
+
+    @property
+    def best_of(self):
+        return self.__best_of
+
+    @property
+    def stats(self):
+        return self.__stats
+
+
