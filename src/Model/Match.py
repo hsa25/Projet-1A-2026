@@ -56,11 +56,11 @@ class Match:
 
     @property
     def round(self):
-        return self.__round
+        return str(self.__round)
 
     @property
     def date(self):
-        return self.__date
+        return str(self.__date)
 
     @property
     def best_of(self):
@@ -69,5 +69,4 @@ class Match:
     @property
     def stats(self):
         return self.__stats
-
 
