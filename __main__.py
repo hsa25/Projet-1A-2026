@@ -126,9 +126,9 @@ while requete.lower() != 'quit':
                 for m in donnees_chargees[base_choisie].competitions[int(requete)].matchs:
                     nom = f"{m.equipe_1.nom} - {m.equipe_2.nom}"
                     print(nom.center(150, '-'))
-                    print(('round :' + m.round).center(150, '-'))
-                    print(('best_of :' + m.best_of).center(150, '-'))
-                    print(('date : ' + m.date).center(150, '-'))
+                    print(f"round : {m.round}")
+                    print(f"best of : {m.best_of}")
+                    print(f"date : {m.date}")
                     print(f"{m.equipe_1.nom} : {m.score_1}")
                     print(f"{m.equipe_2.nom} : {m.score_2}")
                     print(f"statistiques : {m.stats}")
