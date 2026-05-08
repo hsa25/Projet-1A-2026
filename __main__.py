@@ -19,6 +19,13 @@ sport_supportes = [Sport('Badminton', 'badminton'),
                    Sport('Volley masculin', 'volleyballm'),
                    Sport('Volley féminin', 'volleyballf')]
 
+
+print("Application projet traitement de données groupe 56".center(150, '+'))
+print("En tout moment, vous pouvez quittez l'application en tapant 'quit' (avec ou sans majuscules) pour quitter")
+print("De même, la commande back permet de revenir au menu précédent")
+print("/!\ La lecture de base de données peut rencontrer des erreurs si les csv ont des données manquantes")
+input('> Appuyez sur Entrée pour continuer \n')
+
 while requete.lower() != 'quit':
     if requete.lower() != 'back':
         if menu == 'principal':
